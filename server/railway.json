@@ -1,0 +1,7 @@
+web:
+  build:
+    context: .
+    dockerfile: Dockerfile
+  env_vars:
+    - key: NODE_ENV
+      value: production
