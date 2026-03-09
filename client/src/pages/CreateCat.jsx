@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import API_BASE from '../config'
 
 function CreateCat({ onNavigate, onRefresh }) {
@@ -17,7 +17,7 @@ function CreateCat({ onNavigate, onRefresh }) {
     photo: ''
   })
 
-  useState(() => {
+  useEffect(() => {
     fetchBreeds()
   }, [])
 
