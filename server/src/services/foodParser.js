@@ -40,41 +40,42 @@ async function callZhipuAPI(prompt) {
 
 function parseFoodBasic(input) {
   const foods = [];
-  const patterns = [
-    /(\D+?)(\d+(?:\.\d+)?)\s*(g|克|kg|千克|个|块|罐|包|条)/gi,
-    /(\d+(?:\.\d+)?)\s*(g|克|kg|千克|个|块|罐|包|条)\s*(\D+)/gi
-  ];
+  const parts = input.split(/[,，、和与]+/);
   
-  for (const pattern of patterns) {
-    let match;
-    while ((match = pattern.exec(input)) !== null) {
-      let name, amount, unit;
+  for (const part of parts) {
+    const trimmed = part.trim();
+    if (!trimmed) continue;
+    
+    const match = trimmed.match(/^(.+?)(\d+(?:\.\d+)?)\s*(g|克|kg|千克|个|块|罐|包|条)$/i);
+    
+    if (match) {
+      let name = match[1].trim();
+      let amount = parseFloat(match[2]);
+      let unit = match[3].toLowerCase();
       
-      if (match[1] && isNaN(match[1])) {
-        name = match[1].trim();
-        amount = parseFloat(match[2]);
-        unit = match[3];
-      } else {
-        amount = parseFloat(match[1]);
-        unit = match[2];
-        name = match[3]?.trim() || '猫粮';
+      if (unit === 'kg' || unit === '千克') {
+        amount = amount * 1000;
+        unit = 'g';
       }
       
+      unit = unit.replace('克', 'g');
+      
       if (name && amount > 0) {
-        if (unit === 'kg' || unit === '千克') {
-          amount = amount * 1000;
-          unit = 'g';
-        }
-        
-        foods.push({ name, amount, unit: unit.replace('克', 'g') });
+        foods.push({ name, amount, unit });
       }
     }
   }
   
   if (foods.length === 0) {
-    const words = input.split(/[,，、和与\s]+/).filter(w => w.trim());
-    for (const word of words) {
-      foods.push({ name: word.trim(), amount: 50, unit: 'g' });
+    const simpleMatch = input.match(/(\d+(?:\.\d+)?)\s*(g|克|kg|千克|个|块|罐|包|条)/i);
+    if (simpleMatch) {
+      const amount = parseFloat(simpleMatch[1]);
+      let unit = simpleMatch[2].toLowerCase();
+      if (unit === 'kg' || unit === '千克') {
+        foods.push({ name: '猫粮', amount: amount * 1000, unit: 'g' });
+      } else {
+        foods.push({ name: '猫粮', amount, unit: unit.replace('克', 'g') });
+      }
     }
   }
   
