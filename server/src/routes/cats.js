@@ -16,8 +16,8 @@ router.post('/', (req, res) => {
       return res.status(400).json({ error: '缺少必填字段' });
     }
     
-    if (weight < 1 || weight > 15) {
-      return res.status(400).json({ error: '体重需在1-15kg之间' });
+    if (weight < 0 || weight > 20) {
+      return res.status(400).json({ error: '体重需在0-20kg之间' });
     }
     
     const birth = new Date(birthDate);
@@ -93,8 +93,8 @@ router.put('/:id', (req, res) => {
   try {
     const updates = req.body;
     
-    if (updates.weight && (updates.weight < 1 || updates.weight > 15)) {
-      return res.status(400).json({ error: '体重需在1-15kg之间' });
+    if (updates.weight && (updates.weight < 0 || updates.weight > 20)) {
+      return res.status(400).json({ error: '体重需在0-20kg之间' });
     }
     
     const cat = updateCat(req.params.id, updates);
