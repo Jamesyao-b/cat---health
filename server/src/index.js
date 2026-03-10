@@ -1,16 +1,18 @@
-import express from 'express';
-import cors from 'cors';
-import dotenv from 'dotenv';
+import 'dotenv/config';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+process.chdir(join(__dirname, '..'));
+
+import express from 'express';
+import cors from 'cors';
 import interviewRoutes from './routes/interview.js';
 import uploadRoutes from './routes/upload.js';
 import catRoutes from './routes/cats.js';
 import foodRoutes from './routes/food.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-dotenv.config({ path: join(__dirname, '../.env') });
 
 const app = express();
 const PORT = process.env.PORT || 3001;

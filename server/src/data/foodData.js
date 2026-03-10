@@ -50,11 +50,18 @@ function findFoodCalories(foodName, amount, unit = 'g') {
   
   const normalizedInput = foodName.toLowerCase().replace(/\s+/g, '');
   
-  let matchedFood = allFoods.find(f => 
-    f.name?.toLowerCase().replace(/\s+/g, '').includes(normalizedInput) ||
-    normalizedInput.includes(f.brand?.toLowerCase().replace(/\s+/g, '')) ||
-    normalizedInput.includes(f.product?.toLowerCase().replace(/\s+/g, ''))
-  );
+  let matchedFood = allFoods.find(f => {
+    const foodNameNormalized = (f.name || `${f.brand} ${f.product}`).toLowerCase().replace(/\s+/g, '').replace(/\(.*?\)/g, '');
+    const brandNormalized = f.brand?.toLowerCase().replace(/\s+/g, '');
+    const productNormalized = f.product?.toLowerCase().replace(/\s+/g, '');
+    
+    return (
+      foodNameNormalized.includes(normalizedInput) ||
+      normalizedInput.includes(brandNormalized) ||
+      normalizedInput.includes(productNormalized) ||
+      normalizedInput.includes('猫粮') && foodNameNormalized.includes('猫')
+    );
+  });
   
   if (!matchedFood) {
     const defaultCalories = {
@@ -65,9 +72,9 @@ function findFoodCalories(foodName, amount, unit = 'g') {
     };
     
     let category = '干粮';
-    if (normalizedInput.includes('罐') || normalizedInput.includes('湿粮')) category = '湿粮';
-    else if (normalizedInput.includes('鸡') || normalizedInput.includes('牛肉') || normalizedInput.includes('鱼') || normalizedInput.includes('蛋黄')) category = '自制';
-    else if (normalizedInput.includes('冻干') || normalizedInput.includes('猫条') || normalizedInput.includes('零食')) category = '零食';
+    if (normalizedInput.includes('罐') || normalizedInput.includes('湿粮') || normalizedInput.includes('妙鲜包')) category = '湿粮';
+    else if (normalizedInput.includes('鸡') || normalizedInput.includes('牛肉') || normalizedInput.includes('鱼') || normalizedInput.includes('蛋黄') || normalizedInput.includes('蛋白')) category = '自制';
+    else if (normalizedInput.includes('冻干') || normalizedInput.includes('猫条') || normalizedInput.includes('零食') || normalizedInput.includes('肉干')) category = '零食';
     
     return {
       name: foodName,

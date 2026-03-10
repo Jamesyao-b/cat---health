@@ -1,15 +1,23 @@
-if (!process.env.ZHIPU_API_KEY || process.env.ZHIPU_API_KEY === 'your_zhipu_api_key_here') {
-  console.warn('⚠️  警告: ZHIPU_API_KEY 未配置，将使用基础解析模式');
-}
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import { config } from 'dotenv';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+config({ path: join(__dirname, '..', '.env') });
 
 const ZHIPU_API_URL = 'https://open.bigmodel.cn/api/paas/v4/chat/completions';
 
 async function callZhipuAPI(prompt) {
   const apiKey = process.env.ZHIPU_API_KEY;
   
-  if (!apiKey || apiKey === 'your_zhipu_api_key_here') {
-    return parseFoodBasic(prompt);
+  if (!apiKey) {
+    console.log('ZHIPU_API_KEY 未配置，使用基础解析');
+    return null;
   }
+  
+  console.log('使用 AI 解析...');
   
   try {
     const response = await fetch(ZHIPU_API_URL, {
@@ -33,72 +41,59 @@ async function callZhipuAPI(prompt) {
     const data = await response.json();
     return JSON.parse(data.choices[0].message.content);
   } catch (error) {
-    console.error('AI解析失败，使用基础解析:', error.message);
-    return parseFoodBasic(prompt);
+    console.error('AI解析失败:', error.message);
+    return null;
   }
 }
 
 function parseFoodBasic(input) {
+  console.log('parseFoodBasic 输入:', input);
+  
   const foods = [];
   const parts = input.split(/[,，、和与]+/);
+  
+  console.log('分割结果:', parts);
   
   for (const part of parts) {
     const trimmed = part.trim();
     if (!trimmed) continue;
     
+    console.log('处理:', trimmed);
+    
     const match = trimmed.match(/^(.+?)(\d+(?:\.\d+)?)\s*(g|克|kg|千克|个|块|罐|包|条)$/i);
     
+    console.log('匹配结果:', match);
+    
     if (match) {
-      let name = match[1].trim();
-      let amount = parseFloat(match[2]);
-      let unit = match[3].toLowerCase();
+      const name = match[1].trim();
+      const amount = parseFloat(match[2]);
+      let unit = match[3];
       
       if (unit === 'kg' || unit === '千克') {
-        amount = amount * 1000;
+        unit = 'g';
+      } else if (unit === '克') {
         unit = 'g';
       }
       
-      unit = unit.replace('克', 'g');
-      
       if (name && amount > 0) {
+        console.log('添加食物:', { name, amount, unit });
         foods.push({ name, amount, unit });
       }
     }
   }
   
-  if (foods.length === 0) {
-    const simpleMatch = input.match(/(\d+(?:\.\d+)?)\s*(g|克|kg|千克|个|块|罐|包|条)/i);
-    if (simpleMatch) {
-      const amount = parseFloat(simpleMatch[1]);
-      let unit = simpleMatch[2].toLowerCase();
-      if (unit === 'kg' || unit === '千克') {
-        foods.push({ name: '猫粮', amount: amount * 1000, unit: 'g' });
-      } else {
-        foods.push({ name: '猫粮', amount, unit: unit.replace('克', 'g') });
-      }
-    }
-  }
+  console.log('解析结果:', foods);
   
   return foods;
 }
 
 export async function parseFoodInput(input) {
-  const prompt = `请解析以下猫咪食物描述，提取食物名称和分量。
-
-输入：${input}
-
-请以JSON数组格式返回，每个食物包含name(食物名称)、amount(数量)、unit(单位)三个字段。
-示例输出：
-[{"name":"皇家猫粮","amount":50,"unit":"g"},{"name":"鸡胸肉","amount":20,"unit":"g"}]
-
-注意：
-1. 如果单位是kg或千克，请转换为g
-2. 只返回JSON数组，不要有其他说明文字
-3. 如果无法识别具体分量，默认为50g`;
-
-  const result = await callZhipuAPI(prompt);
+  console.log('parseFoodInput 输入:', input);
+  
+  const result = await callZhipuAPI(`请解析以下猫咪食物描述，提取食物名称和分量。输入：${input}。请以JSON数组格式返回，每个食物包含name(食物名称)、amount(数量)、unit(单位)三个字段。只返回JSON数组。`);
   
   if (Array.isArray(result)) {
+    console.log('AI 解析结果:', result);
     return result;
   }
   
@@ -106,56 +101,6 @@ export async function parseFoodInput(input) {
 }
 
 export async function generateDietAdvice(cat, todayCalories, dailyCalories) {
-  const apiKey = process.env.ZHIPU_API_KEY;
-  
-  if (!apiKey || apiKey === 'your_zhipu_api_key_here') {
-    return generateBasicAdvice(cat, todayCalories, dailyCalories);
-  }
-  
-  const prompt = `你是一位专业的宠物营养师，请根据以下信息给出简短的饮食建议（不超过100字）。
-
-猫咪信息：
-- 名字：${cat.name}
-- 品种：${cat.breed}
-- 体重：${cat.weight}kg
-- 绝育状态：${cat.isNeutered ? '已绝育' : '未绝育'}
-- 活动量：${cat.activityLevel || '普通'}
-
-今日饮食：
-- 已摄入：${todayCalories} kcal
-- 建议摄入：${dailyCalories} kcal
-- 差额：${dailyCalories - todayCalories} kcal
-
-请直接给出建议，不要有开场白。`;
-
-  try {
-    const response = await fetch(ZHIPU_API_URL, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`
-      },
-      body: JSON.stringify({
-        model: 'glm-4-flash',
-        messages: [{ role: 'user', content: prompt }],
-        temperature: 0.7,
-        max_tokens: 200
-      })
-    });
-    
-    if (!response.ok) {
-      throw new Error(`API调用失败: ${response.status}`);
-    }
-    
-    const data = await response.json();
-    return data.choices[0].message.content;
-  } catch (error) {
-    console.error('生成建议失败:', error.message);
-    return generateBasicAdvice(cat, todayCalories, dailyCalories);
-  }
-}
-
-function generateBasicAdvice(cat, todayCalories, dailyCalories) {
   const diff = dailyCalories - todayCalories;
   
   if (diff < -50) {
