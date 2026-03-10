@@ -31,6 +31,7 @@ body {
 .header {
   text-align: center;
   margin-bottom: 24px;
+  position: relative;
 }
 
 .header h1 {
@@ -55,6 +56,7 @@ body {
   cursor: pointer;
   padding: 8px 12px;
   border-radius: 8px;
+  transition: background 0.2s;
 }
 
 .back-btn:hover {
@@ -109,6 +111,7 @@ body {
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
+  transition: background 0.2s;
 }
 
 .secondary-btn:hover {
@@ -155,6 +158,7 @@ body {
   background: linear-gradient(135deg, #fff5f0 0%, #ffe8dc 100%);
   border-radius: 16px;
   margin-bottom: 20px;
+  position: relative;
 }
 
 .cat-avatar {
@@ -166,6 +170,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .cat-avatar img {
@@ -202,6 +207,30 @@ body {
   border-radius: 12px;
   font-size: 12px;
   color: #ff7e5f;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.edit-btn {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: white;
+  border: 1px solid #ff7e5f;
+  color: #ff7e5f;
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.edit-btn:hover {
+  background: #ff7e5f;
+  color: white;
+  transform: scale(1.05);
 }
 
 .calorie-section {
@@ -229,6 +258,7 @@ body {
   border-radius: 6px;
   overflow: hidden;
   margin-bottom: 12px;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .calorie-fill {
@@ -302,11 +332,13 @@ body {
   flex-direction: column;
   align-items: center;
   gap: 8px;
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .action-btn:hover {
   transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
 }
 
 .action-btn.record {
@@ -346,6 +378,7 @@ body {
   background: #f9f9f9;
   border-radius: 12px;
   margin-bottom: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .record-time {
@@ -367,6 +400,7 @@ body {
   border-radius: 6px;
   font-size: 12px;
   color: #666;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }
 
 .record-calories {
@@ -379,52 +413,132 @@ body {
   position: relative;
 }
 
+.edit-card {
+  position: relative;
+  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  border: 1px solid #f0f0f0;
+  overflow: hidden;
+}
+
+.edit-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff7e5f, #feb47b);
+}
+
+.create-card {
+  position: relative;
+  background: linear-gradient(135deg, #fff 0%, #f8f9fa 100%);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  border: 1px solid #f0f0f0;
+  overflow: hidden;
+}
+
+.create-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #ff7e5f, #feb47b);
+}
+
 .step-indicator {
   display: flex;
-  gap: 8px;
+  gap: 16px;
   justify-content: center;
-  margin-top: 16px;
+  margin-top: 24px;
+  position: relative;
+}
+
+.step-indicator::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: #e0e0e0;
+  transform: translateY(-50%);
+  z-index: 0;
 }
 
 .step-indicator span {
-  width: 28px;
-  height: 28px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  background: #eee;
+  background: #f9f9f9;
   color: #999;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+  border: 3px solid #e0e0e0;
+  position: relative;
+  z-index: 1;
 }
 
 .step-indicator span.active {
   background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
   color: white;
+  transform: scale(1.15);
+  box-shadow: 0 6px 16px rgba(255, 126, 95, 0.4);
+  border-color: #ff7e5f;
 }
 
 .progress-bar {
   display: flex;
   gap: 8px;
-  margin-bottom: 24px;
+  margin-bottom: 32px;
+  margin-top: 16px;
 }
 
 .progress-step {
   flex: 1;
-  height: 4px;
-  background: #eee;
-  border-radius: 2px;
+  height: 6px;
+  background: #e0e0e0;
+  border-radius: 3px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 .progress-step.active {
   background: linear-gradient(90deg, #ff7e5f, #feb47b);
+  box-shadow: 0 2px 8px rgba(255, 126, 95, 0.3);
+}
+
+.progress-step.active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+  animation: slide 1.5s infinite;
+}
+
+@keyframes slide {
+  0% { left: -100%; }
+  100% { left: 100%; }
 }
 
 .form-step h2 {
   font-size: 18px;
   color: #333;
   margin-bottom: 24px;
+  text-align: center;
+  font-weight: 600;
 }
 
 .form-group {
@@ -443,11 +557,14 @@ body {
 .form-group select,
 .form-group textarea {
   width: 100%;
-  padding: 12px 16px;
-  border: 1px solid #eee;
-  border-radius: 12px;
+  padding: 14px 18px;
+  border: 2px solid #f0f0f0;
+  border-radius: 16px;
   font-size: 16px;
-  transition: border-color 0.2s;
+  transition: all 0.3s ease;
+  background: #fff;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.05);
+  font-family: inherit;
 }
 
 .form-group input:focus,
@@ -455,6 +572,32 @@ body {
 .form-group textarea:focus {
   outline: none;
   border-color: #ff7e5f;
+  box-shadow: 0 0 0 3px rgba(255, 126, 95, 0.1), inset 0 2px 6px rgba(255, 126, 95, 0.1);
+  transform: translateY(-1px);
+}
+
+.form-group input:hover,
+.form-group select:hover,
+.form-group textarea:hover {
+  border-color: #ff7e5f;
+  box-shadow: 0 0 0 2px rgba(255, 126, 95, 0.08);
+}
+
+.form-group input:disabled,
+.form-group select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #f9f9f9;
+}
+
+/* 美化选择框的下拉箭头 */
+.form-group select {
+  appearance: none;
+  background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="%23999" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>');
+  background-repeat: no-repeat;
+  background-position: right 18px center;
+  background-size: 16px;
+  padding-right: 48px;
 }
 
 .form-group .hint {
@@ -466,63 +609,144 @@ body {
 
 .radio-group {
   display: flex;
-  gap: 12px;
+  gap: 16px;
   flex-wrap: wrap;
+  margin-top: 8px;
 }
 
 .radio-item {
   flex: 1;
-  min-width: 80px;
-  padding: 12px;
+  min-width: 90px;
+  padding: 16px 12px;
   background: #f9f9f9;
-  border-radius: 12px;
+  border-radius: 16px;
   text-align: center;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
 }
 
 .radio-item input {
   display: none;
 }
 
+.radio-item:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 .radio-item.selected {
   background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
   color: white;
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 6px 20px rgba(255, 126, 95, 0.4);
+  border-color: #ff7e5f;
+}
+
+.radio-item.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 14px;
+  font-weight: bold;
+  opacity: 0.9;
 }
 
 .checkbox-group {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
+  gap: 12px;
+  margin-top: 8px;
 }
 
 .checkbox-item {
-  padding: 8px 16px;
+  padding: 10px 20px;
   background: #f9f9f9;
-  border-radius: 20px;
+  border-radius: 24px;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.05);
+  border: 2px solid transparent;
+  position: relative;
+  overflow: hidden;
 }
 
 .checkbox-item input {
   display: none;
 }
 
+.checkbox-item:hover {
+  background: #f0f0f0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
 .checkbox-item.selected {
   background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
   color: white;
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 6px 20px rgba(255, 126, 95, 0.4);
+  border-color: #ff7e5f;
+}
+
+.checkbox-item.selected::after {
+  content: '✓';
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  font-size: 12px;
+  font-weight: bold;
+  opacity: 0.9;
 }
 
 .button-group {
   display: flex;
-  gap: 12px;
-  margin-top: 24px;
+  gap: 16px;
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #f0f0f0;
 }
 
 .button-group .primary-btn,
 .button-group .secondary-btn {
   flex: 1;
+  padding: 16px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 16px;
+  transition: all 0.3s ease;
+}
+
+.button-group .primary-btn {
+  background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+  color: white;
+  border: none;
+  box-shadow: 0 4px 12px rgba(255, 126, 95, 0.3);
+}
+
+.button-group .primary-btn:hover:not(:disabled) {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 126, 95, 0.5);
+}
+
+.button-group .secondary-btn {
+  background: #f5f5f5;
+  color: #666;
+  border: 2px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.button-group .secondary-btn:hover {
+  background: #e0e0e0;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  border-color: #d0d0d0;
 }
 
 .record-card {
@@ -548,12 +772,15 @@ body {
   border-radius: 12px;
   font-size: 16px;
   resize: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  background: #fff;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .food-input:focus {
   outline: none;
   border-color: #ff7e5f;
+  box-shadow: inset 0 2px 4px rgba(255, 126, 95, 0.1);
 }
 
 .examples {
@@ -577,10 +804,13 @@ body {
   font-size: 12px;
   color: #666;
   cursor: pointer;
+  transition: background 0.2s, transform 0.2s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .example-btn:hover {
   background: #eee;
+  transform: translateY(-1px);
 }
 
 .parse-btn {
@@ -591,6 +821,7 @@ body {
   background: #f9f9f9;
   border-radius: 16px;
   padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .result-section h3 {
@@ -611,6 +842,13 @@ body {
   background: white;
   border-radius: 12px;
   margin-bottom: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s;
+}
+
+.food-item:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .food-icon {
@@ -652,6 +890,7 @@ body {
   background: white;
   border-radius: 12px;
   margin-bottom: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .total-label {
@@ -697,6 +936,7 @@ body {
   background: #f9f9f9;
   border-radius: 16px;
   margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .weight-current {
@@ -722,12 +962,14 @@ body {
   color: white;
   font-size: 14px;
   font-weight: 600;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .weight-advice {
   padding: 16px;
   background: #fff5f0;
   border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .advice-goal {
@@ -761,6 +1003,7 @@ body {
   padding: 20px;
   background: linear-gradient(135deg, #fff5f0 0%, #ffe8dc 100%);
   border-radius: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .calorie-value {
@@ -788,6 +1031,7 @@ body {
   background: #f9f9f9;
   border-radius: 16px;
   padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .chart {
@@ -817,6 +1061,7 @@ body {
   border-radius: 4px 4px 0 0;
   position: relative;
   min-height: 4px;
+  transition: height 0.3s;
 }
 
 .chart-bar.target {
@@ -825,10 +1070,12 @@ body {
 
 .chart-bar.actual {
   background: linear-gradient(180deg, #ff7e5f 0%, #feb47b 100%);
+  box-shadow: 0 2px 4px rgba(255, 126, 95, 0.3);
 }
 
 .chart-bar.actual.exceeded {
   background: linear-gradient(180deg, #ff5722 0%, #ff9800 100%);
+  box-shadow: 0 2px 4px rgba(255, 87, 34, 0.3);
 }
 
 .bar-value {
@@ -890,6 +1137,7 @@ body {
   padding: 16px;
   background: #f9f9f9;
   border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
 .tips-list li {
@@ -897,10 +1145,15 @@ body {
   font-size: 14px;
   color: #666;
   border-bottom: 1px solid #eee;
+  transition: color 0.2s;
 }
 
 .tips-list li:last-child {
   border-bottom: none;
+}
+
+.tips-list li:hover {
+  color: #ff7e5f;
 }
 
 .tips-list li::before {
@@ -959,5 +1212,10 @@ body {
   
   .calorie-value {
     font-size: 32px;
+  }
+  
+  .edit-btn {
+    font-size: 11px;
+    padding: 4px 8px;
   }
 }

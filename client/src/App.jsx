@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import Home from './pages/Home'
 import CreateCat from './pages/CreateCat'
+import EditCat from './pages/EditCat'
 import FoodRecord from './pages/FoodRecord'
 import HealthAnalysis from './pages/HealthAnalysis'
 import API_BASE from './config'
@@ -50,6 +51,14 @@ function App() {
       case 'create':
         return (
           <CreateCat 
+            onNavigate={navigateTo}
+            onRefresh={fetchCats}
+          />
+        )
+      case 'edit':
+        return (
+          <EditCat 
+            cat={selectedCat}
             onNavigate={navigateTo}
             onRefresh={fetchCats}
           />

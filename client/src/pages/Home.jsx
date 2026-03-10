@@ -98,6 +98,12 @@ function Home({ cats, selectedCat, onSelectCat, onNavigate, onRefresh }) {
                       <span className="tag">{selectedCat.isNeutered ? '已绝育' : '未绝育'}</span>
                     </div>
                   </div>
+                  <button 
+                    className="edit-btn"
+                    onClick={() => onNavigate('edit', selectedCat)}
+                  >
+                    ✏️ 编辑
+                  </button>
                 </div>
 
                 {loading ? (
